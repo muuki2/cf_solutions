@@ -6,3 +6,4 @@
 *.dSYM/
 test_runner 
 main
+.DS_Store
