@@ -1,0 +1,78 @@
+\section{Problem 5: Cards and Joy (Codeforces 999F - 2000 hard)}
+\href{https://codeforces.com/problemset/problem/999/F}{Link to problem}
+
+\subsection{Postavka Problema}
+Dato je $n$ igrača koji sjede za stolom. Svaki igrač ima svoj omiljeni broj. Omiljeni broj $j$-tog igrača je $f_j$.
+
+Na stolu se nalazi $k \cdot n$ karata. Svaka karta sadrži jedan cijeli broj: $i$-ta karta sadrži broj $c_i$. Također, data je sekvenca $h_1, h_2, \ldots, h_k$ čije će značenje biti objašnjeno u nastavku.
+
+Igrači moraju raspodijeliti sve karte tako da svaki od njih dobije tačno $k$ karata. Nakon što su sve karte raspodijeljene, svaki igrač prebroji koliko karata ima sa svojim omiljenim brojem. Nivo sreće igrača je $h_t$ ako igrač ima $t$ karata sa svojim omiljenim brojem. Ako igrač nema nijednu kartu sa svojim omiljenim brojem (tj. $t=0$), njegov nivo sreće je 0.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži dva cijela broja $n$ i $k$ ($1 \leq n \leq 500, 1 \leq k \leq 10$)
+    \item Drugi red sadrži $k \cdot n$ cijelih brojeva $c_1, c_2, \ldots, c_{k \cdot n}$ ($1 \leq c_i \leq 10^5$)
+    \item Treći red sadrži $n$ cijelih brojeva $f_1, f_2, \ldots, f_n$ ($1 \leq f_j \leq 10^5$)
+    \item Četvrti red sadrži $k$ cijelih brojeva $h_1, h_2, \ldots, h_k$ ($1 \leq h_t \leq 10^5$)
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan cijeli broj -- maksimalan mogući ukupni nivo sreće igrača nakon raspodjele karata
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se može riješiti korištenjem dinamičkog programiranja. Ključni uvid je da možemo nezavisno rješavati za svaki omiljeni broj koji se pojavljuje među igračima.
+
+\subsection{Dinamičko Programiranje}
+Za svaki jedinstveni omiljeni broj $x$, rješavamo podproblem:
+\begin{itemize}
+    \item Imamo $p$ igrača koji žele broj $x$
+    \item Imamo $c$ karata sa brojem $x$
+    \item Svaki igrač mora dobiti između 0 i $k$ karata
+\end{itemize}
+
+Definiramo stanje dinamičkog programiranja:
+\begin{equation*}
+dp[i][j]
+\end{equation*}
+
+Gdje je:
+\begin{itemize}
+    \item $i$: Broj igrača kojima smo dodijelili karte (0 do $p$)
+    \item $j$: Broj karata koje smo iskoristili (0 do $\min(c, p \cdot k)$)
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svako stanje $(i,j)$, razmatramo sve moguće načine da dodijelimo karte sljedećem igraču:
+\begin{equation*}
+dp[i+1][j+t] = \max(dp[i+1][j+t], dp[i][j] + h_t)
+\end{equation*}
+
+Gdje je:
+\begin{itemize}
+    \item $t$: Broj karata koje dajemo sljedećem igraču (0 do $\min(k, c-j)$)
+    \item $h_t$: Nivo sreće za dobijanje $t$ karata
+\end{itemize}
+
+\subsection{Rekonstrukcija Rješenja}
+Za svaki omiljeni broj $x$:
+\begin{enumerate}
+    \item Izračunamo optimalno rješenje za igrače koji žele taj broj
+    \item Dodamo maksimalnu moguću sreću na ukupni rezultat
+\end{enumerate}
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(C \cdot N \cdot K \cdot N)$, gdje je $C$ broj različitih omiljenih brojeva
+    \item Prostorna Kompleksnost: $O(N \cdot NK)$
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko optimizacija:
+\begin{itemize}
+    \item Brojanje karata i igrača umjesto praćenja pojedinačnih dodjela
+    \item Ograničavanje broja dostupnih karata na $\min(card\_count[x], players \cdot k)$
+    \item Korištenje lokalnog DP-a za svaki omiljeni broj
+    \item Rano odbacivanje nemogućih stanja
+\end{itemize} 

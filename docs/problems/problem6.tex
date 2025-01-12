@@ -1,0 +1,91 @@
+\section{Problem 6: Supermarket Shopping (Codeforces 815C - 2400 hard)}
+\href{https://codeforces.com/problemset/problem/815/C}{Link to problem}
+
+\subsection{Postavka Problema}
+Karen je studentica koja želi kupiti namirnice u supermarketu sa ograničenim budžetom. Supermarket nudi n proizvoda i posebne kupone za svaki proizvod. Problem je optimizirati kupovinu kako bi se kupio maksimalan broj proizvoda uz data ograničenja.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži dva cijela broja $n$ i $b$ ($1 \leq n \leq 5000$, $1 \leq b \leq 10^9$)
+        \begin{itemize}
+            \item $n$ - broj proizvoda u supermarketu
+            \item $b$ - Karenin budžet
+        \end{itemize}
+    \item Sljedećih $n$ redova opisuju proizvode. Za svaki proizvod $i$:
+        \begin{itemize}
+            \item Dva cijela broja $c_i$ i $d_i$ ($1 \leq d_i < c_i \leq 10^9$)
+                \begin{itemize}
+                    \item $c_i$ - cijena proizvoda
+                    \item $d_i$ - iznos popusta sa kuponom
+                \end{itemize}
+            \item Za $i \geq 2$, dodatni broj $x_i$ ($1 \leq x_i < i$) - indeks kupona koji mora biti iskorišten prije kupona $i$
+        \end{itemize}
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Jedan cijeli broj - maksimalan broj proizvoda koji Karen može kupiti sa budžetom $b$
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se može riješiti korištenjem dinamičkog programiranja i DFS pristupa. Ključni uvidi su:
+\begin{itemize}
+    \item Za svaki proizvod imamo dva stanja: kupovina sa kuponom i bez kupona
+    \item Kuponi formiraju usmjereni aciklički graf (DAG) zavisnosti
+    \item Za korištenje kupona $i$, moramo koristiti kupon $x_i$
+\end{itemize}
+
+\subsection{Dinamičko Programiranje}
+Koristimo tri stanja za svaki čvor u grafu:
+\begin{equation*}
+dp[state][node]
+\end{equation*}
+
+Gdje je:
+\begin{itemize}
+    \item $state$ može biti:
+        \begin{itemize}
+            \item 0: bez korištenja kupona za trenutni čvor
+            \item 1: sa korištenjem kupona za trenutni čvor
+            \item 2: najbolji rezultat kombinujući oba stanja
+        \end{itemize}
+    \item $node$: trenutni proizvod koji razmatramo
+\end{itemize}
+
+\subsection{DFS i Spajanje Rezultata}
+Za svaki čvor u grafu:
+\begin{enumerate}
+    \item Inicijaliziramo bazne slučajeve:
+        \begin{itemize}
+            \item Bez kupona: $\{0, cijena\}$
+            \item Sa kuponom: $\{INF, cijena - popust\}$
+        \end{itemize}
+    \item Rekurzivno obrađujemo sve zavisne čvorove
+    \item Spajamo rezultate koristeći funkciju merge:
+        \begin{itemize}
+            \item Za stanje bez kupona: merge(dp[0][node], dp[0][child])
+            \item Za stanje sa kuponom: merge(dp[1][node], dp[2][child])
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Analiza Složenosti}
+\begin{itemize}
+    \item \textbf{Vremenska složenost}: $O(n \cdot m)$
+        \begin{itemize}
+            \item $n$ - broj proizvoda
+            \item $m$ - maksimalan broj mogućih kombinacija proizvoda
+        \end{itemize}
+    \item \textbf{Prostorna složenost}: $O(n)$
+        \begin{itemize}
+            \item Prostor za graf zavisnosti
+            \item DP tabela za svaki čvor
+        \end{itemize}
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+\begin{itemize}
+    \item Efikasno spajanje rezultata koristeći min operaciju
+    \item Pamćenje samo neophodnih međurezultata
+    \item Korištenje konstante \texttt{0x3f3f3f3f} kao beskonačnosti umjesto \texttt{INT\_MAX}
+    \item Rano odbacivanje nemogućih stanja
+\end{itemize} 

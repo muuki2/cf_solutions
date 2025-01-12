@@ -1,0 +1,67 @@
+\section{Problem 1: Cipher (Codeforces 156 C - 2000 hard)}
+\href{https://codeforces.com/contest/156/problem/C}{Link to problem}
+
+\subsection{Postavka Problema}
+Sherlock Holmes je pronašao tajnu prepisku između dva VIP-a i odlučio je pročitati. Međutim, prepiska je šifrirana. Detektiv je pokušao dešifrirati prepisku, ali nije uspio razumjeti ništa.
+
+Na kraju, nakon razmišljanja, smislio je nešto. Recimo da postoji riječ $s$, koja se sastoji od $|s|$ malih latiničnih slova. Tada za jednu operaciju možete odabrati određenu poziciju $p$ ($1 \leq p < |s|$) i izvršiti jednu od sljedećih radnji:
+
+\begin{itemize}
+    \item zamijeniti slovo $s_p$ s onim koje ga abecedno slijedi i zamijeniti slovo $s_{p+1}$ s onim koje ga abecedno prethodi;
+    \item ili zamijeniti slovo $s_p$ s onim koje ga abecedno prethodi i zamijeniti slovo $s_{p+1}$ s onim koje ga abecedno slijedi.
+\end{itemize}
+
+Napominjemo da slovo "z" nema definirano sljedeće slovo, a slovo "a" nema definirano prethodno slovo. Zato odgovarajuće promjene nisu prihvatljive. Ako operacija zahtijeva izvođenje barem jedne neprihvatljive promjene, tada se takva operacija ne može izvesti.
+
+Dve riječi se podudaraju u značenju ako se jedna od njih može transformirati u drugu kao rezultat nula ili više operacija.
+
+Sherlock Holmes treba brzo naučiti odrediti sljedeće za svaku riječ: koliko riječi može postojati koje se podudaraju s njom u značenju, ali se razlikuju od nje u barem jednom znaku? Izračunajte ovaj broj za njega modulo 1000000007 ($10^9 + 7$).
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži jedan cijeli broj $t$ ($1 \leq t \leq 10^4$) — broj testova.
+    \item Sljedećih $t$ redova sadrži riječi, po jednu u svakom redu. Svaka riječ se sastoji od malih latiničnih slova i ima dužinu od 1 do 100, uključivo. Dužine riječi mogu se razlikovati.
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Za svaku riječ ispišite broj različitih drugih riječi koje se podudaraju s njom u značenju — ne iz riječi navedenih u ulaznim podacima, već iz svih mogućih riječi. Kako traženi broj može biti vrlo velik, ispišite njegovu vrijednost modulo 1000000007 ($10^9 + 7$).
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se rješava koristeći dinamičko programiranje. Ključna opservacija je da možemo pratiti sumu pozicija slova u riječi i koristiti DP za izračunavanje broja mogućih transformacija.
+
+\subsection{Dinamičko Programiranje}
+Definišemo stanje dp[i][s] gdje je:
+\begin{itemize}
+    \item $i$ - dužina riječi
+    \item $s$ - suma pozicija slova u riječi
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svaku poziciju $i$ i trenutnu sumu $s$, imamo sljedeće mogućnosti:
+\begin{enumerate}
+    \item Dodati slovo: dp[i+1][s + k] += dp[i][s] za svako slovo $k$
+\end{enumerate}
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(n \cdot 25n)$
+        \begin{itemize}
+            \item Za svaku dužinu riječi ($n$)
+            \item Za svaku moguću sumu ($25n$)
+        \end{itemize}
+    \item Prostorna Kompleksnost: $O(n \cdot 25n)$
+        \begin{itemize}
+            \item DP tabela: $O(n \cdot 25n)$
+        \end{itemize}
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Korištenje modularne aritmetike za velike brojeve
+    \item Efikasno računanje suma pozicija slova
+    \item Pravilno rukovanje ulaznim i izlaznim podacima
+\end{itemize}
+ 

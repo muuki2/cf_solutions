@@ -1,0 +1,75 @@
+\section{Problem 4: Lucky Common Subsequence (Codeforces 346B - 2000 hard)}
+\href{https://codeforces.com/problemset/problem/346/B}{Link to problem}
+
+\subsection{Postavka Problema}
+Data su dva stringa $s_1$ i $s_2$ i treći string koji se zove virus. Zadatak je pronaći najdužu zajedničku podsekvenciju stringova $s_1$ i $s_2$ koja ne sadrži virus kao podstring.
+
+Podsekvencija stringa je sekvenca koja se može dobiti iz originalnog stringa brisanjem nekih elemenata bez mijenjanja redoslijeda preostalih elemenata. Podstring je kontinuirana podsekvencija stringa.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži string $s_1$ ($1 \leq |s_1| \leq 100$)
+    \item Drugi red sadrži string $s_2$ ($1 \leq |s_2| \leq 100$)
+    \item Treći red sadrži string virus ($1 \leq |virus| \leq 100$)
+    \item Svi stringovi se sastoje samo od velikih slova engleske abecede
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati najdužu zajedničku podsekvenciju stringova $s_1$ i $s_2$ koja ne sadrži virus kao podstring
+    \item Ako takva podsekvencija ne postoji, ispisati 0
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem kombinuje dva klasična problema dinamičkog programiranja:
+\begin{itemize}
+    \item Najduža zajednička podsekvencija (LCS)
+    \item Izbjegavanje podstringa (virus)
+\end{itemize}
+
+Ključni uvid je da moramo pratiti ne samo pozicije u $s_1$ i $s_2$, već i koliko smo virusa ``izgradili'' do sada.
+
+\subsection{Dinamičko Programiranje}
+Koristimo 3-dimenzionalni pristup dinamičkog programiranja:
+
+\begin{equation*}
+dp[i][j][k]
+\end{equation*}
+
+Gdje je:
+\begin{itemize}
+    \item $i$: Pozicija u prvom stringu $s_1$
+    \item $j$: Pozicija u drugom stringu $s_2$
+    \item $k$: Dužina prefiksa virusa koji se podudara sa sufiksom trenutne podsekvencije
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svaku poziciju $(i,j,k)$, imamo nekoliko mogućnosti:
+\begin{enumerate}
+    \item Ako se karakteri $s_1[i]$ i $s_2[j]$ podudaraju:
+    \begin{itemize}
+        \item Ako se karakter podudara sa sljedećim karakterom virusa, povećavamo $k$
+        \item Inače, tražimo najduži prefiks virusa koji se podudara sa sufiksom + novi karakter
+    \end{itemize}
+    \item Preskočiti karakter iz $s_1$ ($i+1$)
+    \item Preskočiti karakter iz $s_2$ ($j+1$)
+    \item Preskočiti karaktere iz oba stringa ($i+1$, $j+1$)
+\end{enumerate}
+
+\subsection{Rekonstrukcija Rješenja}
+Za rekonstrukciju rješenja koristimo dodatnu strukturu $previous\_state$ koja pamti prethodno stanje za svaku poziciju u DP tabeli. Kada pronađemo optimalno rješenje, pratimo put unazad da rekonstruišemo podsekvenciju.
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(|s_1| \cdot |s_2| \cdot |virus|)$
+    \item Prostorna Kompleksnost: $O(|s_1| \cdot |s_2| \cdot |virus|)$
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Korištenje memset za brzu inicijalizaciju DP tabele
+    \item Efikasno poređenje podstringova za virus pattern matching
+    \item Rano odbacivanje nemogućih stanja
+    \item Optimizovano praćenje prethodnih stanja za rekonstrukciju rješenja
+\end{itemize} 

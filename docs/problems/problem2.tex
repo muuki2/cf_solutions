@@ -1,0 +1,72 @@
+\section{Problem 2: Clear The String (Codeforces 1132F - 2000 hard)}
+\href{https://codeforces.com/problemset/problem/1132/F}{Link to problem}
+
+\subsection{Postavka Problema}
+Dat je string $s$ koji se sastoji od malih slova engleske abecede. U jednoj operaciji možemo izbrisati neki kontinualni podstring stringa $s$ ako su sva slova u tom podstringu jednaka. Na primjer, nakon brisanja podstringa bbbb iz stringa abbbaccda dobijamo string aaccda.
+
+Zadatak je izračunati minimalan broj operacija potrebnih da se izbriše cijeli string $s$.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži jedan cijeli broj $n$ ($1 \leq n \leq 500$) - dužinu stringa $s$
+    \item Drugi red sadrži string $s$ ($|s| = n$) koji se sastoji od malih slova engleske abecede
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan cijeli broj - minimalan broj operacija potrebnih da se izbriše string $s$
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem rješavamo koristeći dinamičko programiranje. Ključni uvid je da za svaki podstring možemo:
+\begin{itemize}
+    \item Izbrisati prvo slovo zasebno
+    \item Izbrisati prvo slovo zajedno sa nekim drugim istim slovom koje se nalazi kasnije u stringu
+\end{itemize}
+
+\subsection{Dinamičko Programiranje}
+Definišemo stanje dp[l][r] kao minimalan broj operacija potrebnih da se izbriše podstring od pozicije l do pozicije r.
+
+Imamo sljedeće slučajeve:
+\begin{itemize}
+    \item Ako je l > r: dp[l][r] = 0 (prazan string)
+    \item Ako je l = r: dp[l][r] = 1 (jedno slovo)
+    \item Inače, dp[l][r] je minimum od:
+        \begin{itemize}
+            \item 1 + dp[l+1][r] (brisanje prvog slova zasebno)
+            \item dp[l+1][i-1] + dp[i][r] za svako i gdje je s[l] = s[i] (brisanje prvog slova sa nekim kasnijim istim slovom)
+        \end{itemize}
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svaki podstring [l,r]:
+\begin{enumerate}
+    \item Prvo postavimo dp[l][r] = 1 + dp[l+1][r] (slučaj zasebnog brisanja)
+    \item Zatim za svako i od l+1 do r:
+        \begin{itemize}
+            \item Ako je s[l] = s[i], pokušamo spojiti slovo na poziciji l sa slovom na poziciji i
+            \item U tom slučaju moramo riješiti dva podproblema:
+                \begin{itemize}
+                    \item dp[l+1][i-1]: podstring između uparenih slova
+                    \item dp[i][r]: podstring od drugog uparenog slova do kraja
+                \end{itemize}
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(n^3)$
+        \begin{itemize}
+            \item Imamo $O(n^2)$ stanja (za svaki par l,r)
+            \item Za svako stanje prolazimo kroz $O(n)$ mogućih pozicija za uparivanje
+        \end{itemize}
+    \item Prostorna Kompleksnost: $O(n^2)$ za DP tabelu
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Inicijalizacija DP tabele sa -1 za označavanje neposjećenih stanja
+    \item Pravilno rukovanje baznim slučajevima (prazan string i pojedinačna slova)
+    \item Efikasno računanje minimalnog broja operacija koristeći bottom-up pristup
+\end{itemize} 

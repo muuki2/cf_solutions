@@ -1,0 +1,70 @@
+\section{Problem 10: Minesweeper 1D (Codeforces 404 D- 1900 hard)}
+\href{https://codeforces.com/contest/404/problem/D}{Link to problem}
+
+\subsection{Postavka Problema}
+Igra "Minesweeper 1D" se igra na liniji kvadrata, visine 1 kvadrat i širine $n$ kvadrata. Neki od kvadrata sadrže mine. Ako kvadrat ne sadrži minu, onda sadrži broj od 0 do 2 -- ukupan broj mina u susjednim kvadratima.
+
+Na primjer, ispravno polje za igru izgleda ovako: 001*2***101*. Ćelije označene sa "*" sadrže mine. Primijetite da na ispravnom polju brojevi predstavljaju broj mina u susjednim ćelijama. Na primjer, polje 2* nije ispravno, jer ćelija sa vrijednošću 2 mora imati dvije susjedne ćelije sa minama.
+
+Valera želi napraviti ispravno polje za igru "Minesweeper 1D". Već je nacrtao kvadratno polje širine $n$ ćelija, postavio nekoliko mina na polje i napisao brojeve u neke ćelije. Sada se pita na koliko načina može popuniti preostale ćelije minama i brojevima tako da na kraju dobije ispravno polje.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži niz karaktera bez razmaka $s_1s_2...s_n$ ($1 \leq n \leq 10^6$)
+    \item Niz sadrži samo karaktere "*", "?" i cifre "0", "1" ili "2"
+    \item Ako je karakter $s_i$ jednak "*", tada i-ta ćelija polja sadrži minu
+    \item Ako je karakter $s_i$ jednak "?", tada Valera još nije odlučio šta staviti u i-tu ćeliju
+    \item Karakter $s_i$ koji je jednak cifri predstavlja cifru napisanu u i-tom kvadratu
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan cijeli broj -- broj načina na koje Valera može popuniti prazne ćelije i dobiti ispravno polje
+    \item Kako odgovor može biti velik, ispisati ga po modulu 1000000007 ($10^9 + 7$)
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se rješava koristeći dinamičko programiranje. Ključna opservacija je da za svaku ćeliju moramo pratiti broj mina u susjednim ćelijama kako bismo osigurali da brojevi u ćelijama budu ispravni.
+
+\subsection{Dinamičko Programiranje}
+Definišemo stanje dp[i][j][k] gdje je:
+\begin{itemize}
+    \item $i$ - pozicija do koje smo popunili polje
+    \item $j$ - stanje prethodne ćelije (0-2 za broj, 3 za minu)
+    \item $k$ - stanje trenutne ćelije (0-2 za broj, 3 za minu)
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svaku poziciju i stanje imamo sljedeće mogućnosti:
+\begin{enumerate}
+    \item Ako je trenutna ćelija "?", možemo staviti:
+        \begin{itemize}
+            \item Broj (0-2) ako je validan s obzirom na susjedne mine
+            \item Minu (3) ako je validno s obzirom na susjedne brojeve
+        \end{itemize}
+    \item Ako je trenutna ćelija već popunjena, provjeravamo samo validnost
+\end{enumerate}
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(n \cdot 4 \cdot 4 \cdot 4)$
+        \begin{itemize}
+            \item Za svaku poziciju ($n$)
+            \item Za svako stanje prethodne ćelije (4)
+            \item Za svako stanje trenutne ćelije (4)
+            \item Za svaku moguću vrijednost nove ćelije (4)
+        \end{itemize}
+    \item Prostorna Kompleksnost: $O(n \cdot 4 \cdot 4)$
+        \begin{itemize}
+            \item DP tabela: $O(n \cdot 4 \cdot 4)$
+        \end{itemize}
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Korištenje vrijednosti 3 za predstavljanje mine radi lakše obrade
+    \item Efikasno računanje broja susjednih mina
+    \item Provjera validnosti stanja prije ažuriranja DP tabele
+    \item Pravilno rukovanje modularnom aritmetikom za velike brojeve
+\end{itemize} 

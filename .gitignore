@@ -1,0 +1,8 @@
+.vscode/
+*.aux
+*.log
+*.out
+*.toc
+*.dSYM/
+test_runner 
+main

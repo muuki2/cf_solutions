@@ -1,0 +1,67 @@
+\section{Problem 3: Red-Green Towers (Codeforces 478D - 2000 hard)}
+\href{https://codeforces.com/problemset/problem/478/D}{Link to problem}
+
+\subsection{Postavka Problema}
+\subsubsection{Opis}
+Dat je broj $r$ crvenih i $g$ zelenih kocki. Potrebno je izgraditi toranj koji zadovoljava sljedeća pravila:
+\begin{itemize}
+    \item Toranj se sastoji od nekoliko nivoa
+    \item Ako toranj ima $h$ nivoa, prvi nivo treba imati $h$ kocki, drugi nivo $h-1$ kocki, i tako dalje do vrha gdje zadnji nivo ima 1 kocku
+    \item Svaki nivo mora biti izgrađen od kocki iste boje (ili sve crvene ili sve zelene)
+\end{itemize}
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi i jedini red sadrži dva cijela broja $r$ i $g$ ($0 \leq r, g \leq 2 \cdot 10^5$, $r + g \geq 1$)
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan broj - broj različitih načina na koje se može izgraditi toranj maksimalne moguće visine, po modulu $10^9 + 7$
+\end{itemize}
+
+\subsection{Analiza Rješenja}
+\subsubsection{Ključna Opažanja}
+\begin{itemize}
+    \item Za toranj visine $h$ potrebno je tačno $\frac{h(h+1)}{2}$ kocki
+    \item Maksimalna visina tornja je najveće $h$ za koje vrijedi $\frac{h(h+1)}{2} \leq r + g$
+    \item Dva tornja su različita ako postoji barem jedan nivo koji je u jednom tornju crven, a u drugom zelen
+\end{itemize}
+
+\subsubsection{Pristup Rješenju}
+Problem rješavamo u dva koraka:
+\begin{enumerate}
+    \item Prvo određujemo maksimalnu moguću visinu tornja $h$
+    \item Zatim koristimo dinamičko programiranje za računanje broja različitih načina izgradnje tornja te visine
+\end{enumerate}
+
+\subsection{Implementacija}
+\subsubsection{Dinamičko Programiranje}
+Definišemo stanje dp[t][r] kao broj načina da se izgradi prvih t nivoa tornja koristeći tačno r crvenih kocki.
+
+Tranzicije su:
+\begin{itemize}
+    \item Dodavanje crvenog nivoa: dp[t+1][r + (t+1)] += dp[t][r]
+    \item Dodavanje zelenog nivoa: dp[t+1][r] += dp[t][r]
+\end{itemize}
+
+\subsubsection{Optimizacije}
+\begin{enumerate}
+    \item \textbf{Memorijska Optimizacija}: Čuvamo samo dva reda DP tabele
+    \item \textbf{Preskakanje Nula}: Preskačemo računanje tranzicija iz stanja gdje je dp[t][r] = 0
+    \item \textbf{Modularna Aritmetika}: Sve operacije se izvode po modulu $10^9 + 7$
+\end{enumerate}
+
+\subsection{Analiza Složenosti}
+\begin{itemize}
+    \item \textbf{Vremenska složenost}: $O(h \cdot r)$
+        \begin{itemize}
+            \item Za svaki nivo t od 0 do h-1
+            \item Za svaki broj iskorištenih crvenih kocki r
+        \end{itemize}
+    \item \textbf{Prostorna složenost}: $O(r)$
+        \begin{itemize}
+            \item Samo dva reda DP tabele
+            \item Svaki red ima r+1 elemenata
+        \end{itemize}
+\end{itemize}

@@ -1,0 +1,67 @@
+\section{Problem 9: Antimatter (Codeforces 383D - 2300 hard)}
+\href{https://codeforces.com/problemset/problem/383/D}{Link to problem}
+
+\subsection{Postavka Problema}
+Iahub je slučajno otkrio tajni laboratorij. U njemu je pronašao $n$ uređaja poredanih u liniju, numerisanih od 1 do $n$ slijeva nadesno. Svaki uređaj $i$ ($1 \leq i \leq n$) može proizvesti ili $a_i$ jedinica materije ili $a_i$ jedinica antimaterije.
+
+Iahub želi odabrati neki kontinuirani podniz uređaja u laboratoriji, odrediti način proizvodnje za svaki od njih (proizvodnja materije ili antimaterije) i na kraju napraviti fotografiju. Međutim, bit će uspješan samo ako su količine proizvedene materije i antimaterije u odabranom podnizu jednake (u suprotnom bi došlo do prekomjerne materije ili antimaterije na fotografiji).
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži jedan cijeli broj $n$ ($1 \leq n \leq 1000$) -- broj uređaja
+    \item Drugi red sadrži $n$ cijelih brojeva $a_1, a_2, ..., a_n$ ($1 \leq a_i \leq 1000$)
+    \item Suma $a_1 + a_2 + ... + a_n$ će biti manja ili jednaka 10000
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan cijeli broj -- broj različitih načina na koje Iahub može napraviti fotografiju, po modulu $10^9 + 7$
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se rješava koristeći dinamičko programiranje. Ključna opservacija je da za svaki uređaj imamo dva izbora: proizvesti materiju ($+a_i$) ili antimateriju ($-a_i$). Cilj je pronaći sve kontinuirane podnizove gdje je suma odabranih vrijednosti jednaka nuli.
+
+\subsection{Dinamičko Programiranje}
+Definišemo stanje dp[i][s] gdje je:
+\begin{itemize}
+    \item $i$ - pozicija do koje smo obradili uređaje (0-bazirano)
+    \item $s$ - trenutna razlika između količine materije i antimaterije
+\end{itemize}
+
+Koristimo tehniku "rolling array" za optimizaciju memorije, čuvajući samo dvije vrste stanja:
+\begin{itemize}
+    \item dp[current\_row][s] - stanja za trenutnu poziciju
+    \item dp[next\_row][s] - stanja za sljedeću poziciju
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svaku poziciju $i$ i trenutnu sumu $s$, imamo sljedeće mogućnosti:
+\begin{enumerate}
+    \item Dodati materiju: dp[next\_row][s + a[i]] += dp[current\_row][s]
+    \item Dodati antimateriju: dp[next\_row][s - a[i]] += dp[current\_row][s]
+    \item Započeti novi podniz od trenutne pozicije: dp[next\_row][0] += 1
+\end{enumerate}
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(n \cdot MAXS)$
+        \begin{itemize}
+            \item Za svaku poziciju ($n$)
+            \item Za svaku moguću sumu ($2 \cdot MAXS$)
+            \item Gdje je MAXS = 10000
+        \end{itemize}
+    \item Prostorna Kompleksnost: $O(MAXS)$
+        \begin{itemize}
+            \item Koristimo samo dva reda DP tabele
+            \item Svaki red ima veličinu $O(MAXS)$
+        \end{itemize}
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Korištenje "rolling array" tehnike za optimizaciju memorije
+    \item Efikasno rukovanje negativnim indeksima pomoću pomaka u sredinu niza
+    \item Pravilno rukovanje modularnom aritmetikom za velike brojeve
+    \item Optimizovano čišćenje niza za sljedeću iteraciju
+\end{itemize} 

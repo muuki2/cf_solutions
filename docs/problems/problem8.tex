@@ -1,0 +1,66 @@
+\section{Problem 8: Bear and Company (Codeforces 790 C- 2500 hard)}
+\href{https://codeforces.com/contest/790/problem/C/}{Link to problem}
+
+\subsection{Postavka Problema}
+Bear Limak priprema zadatke za programersko takmičenje. Naravno, bilo bi neprofesionalno spomenuti ime sponzora u tekstu zadatka. Limak to shvata ozbiljno i želi promijeniti neke riječi. Da bi tekst i dalje bio čitljiv, pokušat će modificirati svaku riječ što je manje moguće.
+
+Limak ima string $s$ koji se sastoji od velikih slova engleske abecede. U jednom potezu može zamijeniti mjesta dvama susjednim slovima u stringu. Na primjer, može transformirati string "ABBC" u "BABC" ili "ABCB" u jednom potezu.
+
+Limak želi dobiti string bez podstringa "VK" (tj. ne smije biti slova 'V' neposredno praćenog slovom 'K'). Može se lako dokazati da je to moguće za bilo koji početni string $s$.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži jedan cijeli broj $n$ ($1 \leq n \leq 75$) -- dužinu stringa
+    \item Drugi red sadrži string $s$ koji se sastoji od velikih slova engleske abecede, dužine $n$
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan cijeli broj -- minimalan broj poteza koje Limak mora napraviti da bi dobio string bez podstringa "VK"
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se rješava koristeći dinamičko programiranje. Ključna opservacija je da možemo pratiti pozicije slova 'V', 'K' i ostalih slova odvojeno, te računati minimalan broj poteza potrebnih za njihovo preuređivanje.
+
+\subsection{Dinamičko Programiranje}
+Definišemo stanje dp[i][j][k][l] gdje je:
+\begin{itemize}
+    \item $i$ - broj obrađenih 'V' slova
+    \item $j$ - broj obrađenih 'K' slova
+    \item $k$ - broj obrađenih ostalih slova (označenih sa \texttt{\#})
+    \item $l$ - flag koji označava da li je prethodno slovo bilo 'V' (1) ili nije (0)
+\end{itemize}
+
+\subsection{Tranzicije Stanja}
+Za svako stanje imamo tri mogućnosti:
+\begin{enumerate}
+    \item Uzeti sljedeće 'V': dp[i+1][j][k][1]
+    \item Uzeti sljedeće 'K' (samo ako prethodno nije bilo 'V'): dp[i][j+1][k][0]
+    \item Uzeti sljedeće drugo slovo: dp[i][j][k+1][0]
+\end{enumerate}
+
+Cijena svake tranzicije se računa kao broj slova koja moramo preskočiti da bismo došli do željene pozicije.
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: $O(n^3)$
+        \begin{itemize}
+            \item Za svaku kombinaciju i, j, k (maksimalno n)
+            \item Za svako stanje l (2 mogućnosti)
+            \item Računanje cijene je $O(1)$ zbog binary searcha
+        \end{itemize}
+    \item Prostorna Kompleksnost: $O(n^3)$
+        \begin{itemize}
+            \item DP tabela: $O(n^3)$
+            \item Pozicije slova: $O(n)$
+        \end{itemize}
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Pretprocesiranje stringa zamjenom svih slova osim 'V' i 'K' sa \texttt{\#}
+    \item Korištenje binary searcha za efikasno računanje cijene tranzicija
+    \item Pamćenje pozicija slova u sortiranim nizovima
+    \item Korištenje upmin funkcije za ažuriranje minimalnih vrijednosti
+\end{itemize} 

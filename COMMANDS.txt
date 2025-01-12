@@ -1,0 +1,70 @@
+# Competitive Programming Project Commands Reference
+
+## Basic Testing
+make test                    # Run all tests without details
+./test_runner -v            # Run all tests with detailed output
+./test_runner -p 1          # Test only Problem 1
+./test_runner -p 1 -v       # Test Problem 1 with verbose output
+
+## Compilation Commands
+make                        # Build everything
+make clean                  # Clean all build files
+
+## Documentation Commands
+cd docs && ./compile.sh     # Compile LaTeX documentation
+
+## Test Runner Options
+-v, --verbose              # Show detailed test information
+-p, --problem NUMBER       # Run tests for specific problem (1, 2, or 3)
+
+## Project Structure
+.
+├── src/
+│   ├── main.cpp           # Main program
+│   └── test_runner.cpp    # Test runner implementation
+├── solutions/
+│   ├── problemX.cpp       # Solution implementation
+│   ├── problemX.h         # Solution header
+│   └── problemX_submit.cpp# Submission version
+├── tests/
+│   └── problemX/
+│       ├── input1.txt     # Test inputs
+│       └── output1.txt    # Test outputs
+├── docs/
+│   ├── main.tex          # Main documentation
+│   ├── problems/         # Problem documentation
+│   └── compile.sh        # Documentation compiler
+└── Makefile              # Build system
+
+## Common Testing Scenarios
+
+# 1. Testing a new solution
+make clean && make test    # Clean build and run all tests
+
+# 2. Debugging a specific problem
+./test_runner -p X -v      # Run tests for problem X with details
+
+# 3. Checking documentation
+cd docs && ./compile.sh    # Generate PDF documentation
+
+# 4. Before submitting to Codeforces
+# Step 1: Run all tests
+make test
+# Step 2: Check the submission file (problemX_submit.cpp)
+# Step 3: Submit the _submit.cpp file to Codeforces
+
+## Test Output Format (with -v flag)
+Testing Problem X:
+----------------------------------------
+Test case Y:
+Input:
+[input content]
+
+Expected output:
+[expected output]
+
+Actual output:
+[actual output]
+
+Test [PASSED/FAILED]
+---------------------------------------- 

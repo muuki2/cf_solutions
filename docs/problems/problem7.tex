@@ -1,0 +1,63 @@
+\section{Problem 7: Divide by Three (Codeforces 792C - 2000 hard)}
+\href{https://codeforces.com/problemset/problem/792/C}{Link to problem}
+
+\subsection{Postavka Problema}
+Na tabli je napisan pozitivan cijeli broj n. Potrebno je transformisati taj broj u lijep broj brisanjem nekih cifara, pri čemu želimo obrisati što je moguće manje cifara.
+
+Broj se smatra lijepim ako se sastoji od najmanje jedne cifre, nema vodećih nula i djeljiv je sa 3. Na primjer, 0, 99, 10110 su lijepi brojevi, dok 00, 03, 122 nisu.
+
+Potrebno je napisati program koji će za dati broj n pronaći lijep broj takav da se n može transformisati u taj broj brisanjem najmanjeg mogućeg broja cifara. Možete obrisati proizvoljni skup cifara, ne moraju biti uzastopne u broju n.
+
+Ako nije moguće dobiti lijep broj, ispisati -1. Ako postoji više rješenja, ispisati bilo koje od njih.
+
+\subsubsection{Ulaz}
+\begin{itemize}
+    \item Prvi red sadrži pozitivan cijeli broj n bez vodećih nula ($1 \leq n < 10^{100000}$)
+\end{itemize}
+
+\subsubsection{Izlaz}
+\begin{itemize}
+    \item Ispisati jedan broj -- bilo koji lijep broj dobijen brisanjem najmanjeg mogućeg broja cifara
+    \item Ako ne postoji rješenje, ispisati -1
+\end{itemize}
+
+\subsection{Pristup Rješenju}
+Problem se rješava koristeći dinamičko programiranje. Ključna opservacija je da možemo pratiti ostatak pri dijeljenju sa 3 za svaki prefiks i dužinu formiranog broja. Također, moramo voditi računa o vodećim nulama i posebnim slučajevima.
+
+\subsection{Dinamičko Programiranje}
+Definišemo stanje dp[i][r] kao maksimalnu dužinu lijepog broja koji se može formirati koristeći prvih i cifara sa ostatkom r pri dijeljenju sa 3. Dodatno, koristimo niz choice[i][r] za rekonstrukciju rješenja.
+
+\subsection{Tranzicije Stanja}
+Za svaku poziciju i i trenutnu cifru d, imamo sljedeće mogućnosti:
+\begin{enumerate}
+    \item Ako d nije 0, možemo početi novi broj: dp[i+1][d mod 3] = 1
+    \item Za svaki postojeći ostatak r:
+        \begin{itemize}
+            \item Dodaj cifru: dp[i+1][(r · 10 + d) mod 3] = dp[i][r] + 1
+            \item Ne dodaj cifru: dp[i+1][r] = dp[i][r]
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Analiza Kompleksnosti}
+\begin{itemize}
+    \item Vremenska Kompleksnost: O(n), gdje je n dužina ulaznog stringa
+        \begin{itemize}
+            \item Za svaku poziciju razmatramo 3 moguća ostatka
+            \item Svaka operacija je O(1)
+        \end{itemize}
+    \item Prostorna Kompleksnost: O(n)
+        \begin{itemize}
+            \item dp tabela: O(n)
+            \item choice niz: O(n)
+        \end{itemize}
+\end{itemize}
+
+\subsection{Detalji Implementacije}
+Implementacija koristi nekoliko ključnih optimizacija:
+\begin{itemize}
+    \item Korištenje pomoćne funkcije updateMax za efikasno ažuriranje dp stanja
+    \item Pažljivo rukovanje vodećim nulama u izlazu
+    \item Pravilno računanje ostataka tokom rekonstrukcije
+    \item Optimizovano praćenje prethodnih stanja za rekonstrukciju rješenja
+\end{itemize}
+ 
